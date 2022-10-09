@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.let.boardlink.service.impl.BoardLinkDAO">
+    <resultMap type="egovframework.let.boardlink.service.impl.BoardLinkVO" id="boardlinkmap">
+        <id column="UID" property="uid"/>
+        <result column="BOARD" property="board"/>
+        <result column="ID" property="id"/>
+        <result column="NAME" property="name"/>
+        <result column="ZONE" property="zone"/>
+        <result column="PLACE" property="place"/>
+        <result column="JOB" property="job"/>
+        <result column="OWNER" property="owner"/>
+        <result column="SUB" property="sub"/>
+        <result column="CON" property="con"/>
+        <result column="HTML" property="html"/>
+        <result column="PASSIVE" property="passive"/>
+        <result column="NOTICE" property="notice"/>
+        <result column="ZVEIW" property="zview"/>
+        <result column="DEPTH" property="depth"/>
+        <result column="FNAME" property="fname"/>
+        <result column="FDATE" property="fdate"/>
+        <result column="SIGNDATE" property="signdate"/>
+        <result column="MOVIE" property="movie"/>
+        <result column="SDATE" property="sdate"/>
+        <result column="MAINVIEW" property="mainview"/>
+        <result column="TWITADD" property="twitadd"/>
+        <result column="FDADD" property="fdadd"/>
+    </resultMap>
+
+    <select id="select_file" parameterType="hashMap" resultType="hashMap">
+        <![CDATA[
+        select
+            *
+        from
+            sj_total_file
+        WHERE board = 'notify1'
+        order by signdate desc
+        ]]>
+    </select>
+    <select id="select_filepage" parameterType="hashMap" resultType="hashMap">
+        <![CDATA[
+        select
+            *
+        from
+            sj_total_file
+        WHERE board = 'notify1'
+        order by signdate desc
+            limit #{firstIndex}, #{recordCountPerPage}
+        ]]>
+    </select>
+    <select id="select_filepagecount" parameterType="hashMap" resultType="int">
+        <![CDATA[
+        select
+            count(*)
+        from
+            sj_total_file
+        WHERE board = 'notify1'
+        ]]>
+    </select>
+    <select id="select_filepagevo" parameterType="hashMap" resultType="egovframework.let.boardlink.service.impl.BoardLinkVO" resultMap="boardlinkmap">
+        <![CDATA[
+        select
+            *
+        from
+            sj_total_file
+        WHERE board = 'notify1'
+        order by signdate desc
+            limit #{firstIndex}, #{recordCountPerPage}
+        ]]>
+    </select>
+
+    <select id="select_filedetail" parameterType="egovframework.let.boardlink.service.impl.BoardLinkVO"
+            resultType="egovframework.let.boardlink.service.impl.BoardLinkVO" resultMap="boardlinkmap">
+        <![CDATA[
+        select
+            *
+        from
+            sj_total_file
+        WHERE board = #{board}
+          and uid = #{uid}
+        ]]>
+    </select>
+
+    <select id="select_filelist" parameterType="hashMap" resultType="egovframework.let.boardlink.service.impl.BoardListVO">
+        <![CDATA[
+        select
+            *
+        from
+            sj_total_board
+        ]]>
+    </select>
+    <select id="select_filelistlinkview" parameterType="egovframework.let.boardlink.service.impl.BoardLinkVO"
+            resultType="egovframework.let.boardlink.service.impl.BoardLinkVO" resultMap="boardlinkmap">
+        <![CDATA[
+        select
+            *
+        from
+            sj_total_file
+        WHERE board = #{board}
+        order by signdate desc
+            limit #{firstIndex}, #{recordCountPerPage}
+        ]]>
+    </select>
+    <insert id="insert_file" parameterType="egovframework.let.boardlink.service.impl.BoardLinkVO" useGeneratedKeys="true" keyProperty="uid">
+        <![CDATA[
+        insert into sj_total_file
+        (board, id, name, zone, place, job, owner, sub, con, fname, fdate, signdate)
+        values
+            (#{board}, #{id}, #{name}, #{zone}, #{place}, #{job}, #{owner}, #{sub}, #{con}, #{fname}, #{fdate}, #{signdate})
+        ]]>
+    </insert>
+    <update id="update_file" parameterType="egovframework.let.boardlink.service.impl.BoardLinkVO">
+        <![CDATA[
+        update sj_total_file
+        set
+            sub = #{sub},
+            zone = #{zone},
+            con = #{con},
+            id = #{id},
+            place = #{place},
+            job = #{job},
+            owner = #{owner},
+            fname = #{fname},
+            fdate = #{fdate},
+            signdate = #{signdate}
+
+        where board = #{board}
+          and uid = #{uid}
+        ]]>
+    </update>
+
+</mapper>
